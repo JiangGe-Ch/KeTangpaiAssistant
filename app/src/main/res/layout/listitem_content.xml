@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!--图标-->
+            <ImageView
+                android:id="@+id/content_item_type_image"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:src="@mipmap/work"/>
+
+            <TextView
+                android:id="@+id/content_item_type_text"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:text="作业"
+                android:textAlignment="center"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="vertical">
+
+            <us.ch.jiangge.ketangpaiAssistant.entity.MyTextView
+                android:id="@+id/content_item_title"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="这是测试内容标题"
+                android:textSize="30dp"
+                android:ellipsize="marquee"
+                android:singleLine="true"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/content_item_endtime"
+                    android:layout_width="300dp"
+                    android:layout_height="match_parent"
+                    android:text="截止时间：2022-03-31 24:00:00"
+                    android:textSize="20dp"
+                    android:ellipsize="marquee"/>
+
+                <TextView
+                    android:id="@+id/content_item_mstatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="未提交"
+                    android:textSize="20dp"
+                    android:ellipsize="marquee"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal">
+
+        <us.ch.jiangge.ketangpaiAssistant.entity.MyTextView
+            android:id="@+id/content_item_course_info_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="计算机体系结构"
+            android:textSize="20dp"
+            android:paddingEnd="10dp"
+            android:ellipsize="marquee"
+            android:singleLine="true"/>
+
+        <us.ch.jiangge.ketangpaiAssistant.entity.MyTextView
+            android:id="@+id/content_item_course_info_teacher"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="张伟"
+            android:textSize="20dp"
+            android:paddingEnd="10dp"
+            android:ellipsize="marquee"
+            android:singleLine="true"/>
+
+        <us.ch.jiangge.ketangpaiAssistant.entity.MyTextView
+            android:id="@+id/content_item_course_info_classname"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="20dp"
+            android:text="计科1904、05、06"
+            android:ellipsize="marquee"
+            android:singleLine="true"/>
+
+    </LinearLayout>
+
+</LinearLayout>
