@@ -16,20 +16,26 @@ import java.util.*;
 public class KeTangPaiClient {
 
     private Context context;
+    private String token;
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     OkHttpClient client=new OkHttpClient();
     private static final String TAG="KeTangPaiClient";
 
-    public KeTangPaiClient(Context contextArgs){
+    public KeTangPaiClient(Context contextArgs, String token){
         this.context=contextArgs;
+        this.token=token;
+    }
+
+    public void setToken(String token){
+        this.token=token;
     }
 
     public int start() throws Exception {
         Log.i(TAG, "start: ");
-        String token=login();
+//        String token=login();
         if(token==null) {
-            Log.i(TAG, "start: 登录失败，未获取到token...");
+            Log.i(TAG, "start: 错误！！！token=["+token+"]...");
             return -1;
         }
         Log.i(TAG, "start: 登录成功，获取到token["+token+"]...");;
@@ -58,40 +64,7 @@ public class KeTangPaiClient {
         return 1;
     }
 
-    /**
-     * 登录方法
-     * @return  token
-     * @throws IOException
-     */
-    private String login() throws Exception {
-        Log.i(TAG, "login: ");
-//        String bodyStr="{\"email\":\"133***1837\",\"password\":\"*********\",\"remember\":\"0\",\"code\":\"\",\"mobile\":\"\",\"type\":\"login\",\"reqtimestamp\":1648456768097}";
-        Scanner sc=new Scanner(System.in);
 
-
-        String email="课堂派账号";
-        String password="课堂派密码";
-
-
-        JSONObject reqbody=new JSONObject("{\"remember\":\"0\",\"code\":\"\",\"mobile\":\"\",\"type\":\"login\"}");
-//        JSONObject reqbody=JSONObject.parseObject("{\"remember\":\"0\",\"code\":\"\",\"mobile\":\"\",\"type\":\"login\"}");
-        reqbody.put("email", email);
-        reqbody.put("password", password);
-        reqbody.put("reqtimestamp", System.currentTimeMillis());
-        RequestBody body=RequestBody.create(JSON, reqbody.toString());
-        Request request=new Request.Builder()
-                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.82 Safari/537.36")
-                .url("https://openapiv5.ketangpai.com//UserApi/login")
-                .post(body)
-                .build();
-        Response response=client.newCall(request).execute();
-        JSONObject json=new JSONObject(response.body().string());
-        if(json.get("message").equals("访问成功")){
-            return json.getJSONObject("data").get("token").toString();
-        }else {
-            return null;
-        }
-    }
 
 
     /**

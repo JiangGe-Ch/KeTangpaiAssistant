@@ -14,10 +14,12 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import us.ch.jiangge.ketangpaiAssistant.R;
-import us.ch.jiangge.ketangpaiAssistant.emuns.ContentType;
 import us.ch.jiangge.ketangpaiAssistant.entity.ContentItem;
 
 public class ContentListAdapter extends ArrayAdapter<ContentItem> {
+
+    private static final String TAG="ContentListAdapter";
+
     private int resourceId;
     public ContentListAdapter(@NonNull Context context, int textViewResourceId, @NonNull List<ContentItem> objects) {
         super(context, textViewResourceId, objects);
@@ -52,6 +54,11 @@ public class ContentListAdapter extends ArrayAdapter<ContentItem> {
         holder.titleTextView.setText(item.getTitle());
         holder.endTimeTextView.setText("截止时间:"+item.getEndtime());
         holder.mstatusTextView.setText(item.getMstatus());
+        if(item.getMstatus().equals("未完成")){
+            view.setBackgroundColor(getContext().getResources().getColor(R.color.bgcolor_mstatus_no));
+        }else {
+            view.setBackgroundColor(getContext().getResources().getColor(R.color.bgcolor_mstatus_default));
+        }
         holder.courseName.setText(item.getCourseName());
         holder.teacher.setText(item.getTeacher());
         holder.className.setText(item.getClassName());
@@ -59,13 +66,37 @@ public class ContentListAdapter extends ArrayAdapter<ContentItem> {
     }
 
     class ViewHolder{
+        /**
+         * 内容类型 图标
+         */
         ImageView typeImageView;
+        /**
+         * 内容类型 文字
+         */
         TextView typeTextView;
+        /**
+         * 内容标题
+         */
         TextView titleTextView;
+        /**
+         * 截止时间
+         */
         TextView endTimeTextView;
+        /**
+         * 提交状态
+         */
         TextView mstatusTextView;
+        /**
+         * 内容对应课程名称
+         */
         TextView courseName;
+        /**
+         * 课程老师
+         */
         TextView teacher;
+        /**
+         * 课程班级
+         */
         TextView className;
     }
 

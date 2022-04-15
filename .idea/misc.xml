@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android Projects/KeTangpaiAssistant/app/src/main/res/layout/actionbar_activity_login.xml" value="0.23489583333333333" />
+        <entry key="..\:/Android Projects/KeTangpaiAssistant/app/src/main/res/layout/actionbar_activity_main.xml" value="0.25677083333333334" />
+        <entry key="..\:/Android Projects/KeTangpaiAssistant/app/src/main/res/layout/activity_login.xml" value="0.240625" />
         <entry key="..\:/Android Projects/KeTangpaiAssistant/app/src/main/res/layout/activity_main.xml" value="0.20208333333333334" />
         <entry key="..\:/Android Projects/KeTangpaiAssistant/app/src/main/res/layout/listitem_content.xml" value="0.33" />
+        <entry key="..\:/Android Projects/KeTangpaiAssistant/app/src/main/res/layout/menu_activity_main.xml" value="0.23072916666666668" />
       </map>
     </option>
   </component>
