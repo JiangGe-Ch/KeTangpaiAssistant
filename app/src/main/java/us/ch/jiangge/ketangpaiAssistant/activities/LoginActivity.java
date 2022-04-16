@@ -1,5 +1,6 @@
 package us.ch.jiangge.ketangpaiAssistant.activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,10 +8,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +28,9 @@ import us.ch.jiangge.ketangpaiAssistant.client.LoginClient;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
     private final String TAG="LoginActivity";
+
+    private AlertDialog progressDialog;
+    private TextView progressMessage;
 
     Handler handler=new Handler(){
         @Override
@@ -60,6 +66,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Intent intent=getIntent();
                     intent.putExtra("token", token);
                     setResult(RESULT_OK, intent);
+                    progressDialog.cancel();
                     finish();
                 }
             }
@@ -85,6 +92,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.login_loginBt:
+
+                AlertDialog.Builder builder=new AlertDialog.Builder(this);
+                View progressBar= LayoutInflater.from(this).inflate(R.layout.dialog_progerss_my, null);
+                progressMessage=progressBar.findViewById(R.id.dialog_progress_message);
+                progressMessage.setText("正在登录...");
+                builder.setView(progressBar);
+                progressDialog=builder.create();
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+
                 EditText emailEditer=findViewById(R.id.login_email);
                 EditText passwordEditer=findViewById(R.id.login_password);
                 String email=emailEditer.getText().toString();

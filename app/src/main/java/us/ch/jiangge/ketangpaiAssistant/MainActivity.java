@@ -5,15 +5,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -30,14 +36,36 @@ public class MainActivity extends AppCompatActivity {
 
     private static KeTangPaiClient client;
 
+    private AlertDialog progressDialog;
+    private TextView progressMessage;
+
     Handler handler=new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
             Log.d(TAG, "handleMessage: message.what=["+msg.what+"]...");
-            if(msg.what==1){
-                setUpListView();
-            }else {
-                Toast.makeText(MainActivity.this, "错误码："+msg.what, Toast.LENGTH_SHORT).show();
+            switch (msg.what){
+                case 1:{
+                    setUpListView();
+                    progressDialog.cancel();
+                }break;
+                case 2:progressMessage.setText("正在建立课程信息映射...");break;
+                case 3:progressMessage.setText("正在获取课程内容...");break;
+                case 4:progressMessage.setText("正在建立课程内容数据库...");break;
+                case -1:{
+                    Toast.makeText(MainActivity.this, "错误！token=null，请尝试重新登录", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+
+                    Intent loginIntent=new Intent(MainActivity.this, LoginActivity.class);
+                    startActivityForResult(loginIntent, 1);
+                }break;
+                case -2:{
+                    Toast.makeText(MainActivity.this, "错误！获取课程信息列表失败", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }break;
+                case -3:{
+                    Toast.makeText(MainActivity.this, "错误！获取课程内容失败", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                }break;
             }
         }
     };
@@ -106,15 +134,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startKetangpaiClient(String token){
+
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        View progressBar=LayoutInflater.from(this).inflate(R.layout.dialog_progerss_my, null);
+        progressMessage=progressBar.findViewById(R.id.dialog_progress_message);
+        progressMessage.setText("正在获取课程列表...");
+        builder.setView(progressBar);
+        builder.setTitle("正在加载...");
+        progressDialog=builder.create();
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
         client=new KeTangPaiClient(MainActivity.this, token);
 
         Thread thread=new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Message message=new Message();
-                    message.what=client.start();
-                    handler.sendMessage(message);
+                    client.start(handler);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

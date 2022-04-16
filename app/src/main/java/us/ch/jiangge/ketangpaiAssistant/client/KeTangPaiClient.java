@@ -1,6 +1,8 @@
 package us.ch.jiangge.ketangpaiAssistant.client;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -31,37 +33,56 @@ public class KeTangPaiClient {
         this.token=token;
     }
 
-    public int start() throws Exception {
+    public void start(Handler msgHandler) throws Exception {
         Log.i(TAG, "start: ");
 //        String token=login();
+
+        Message msg;
+
         if(token==null) {
             Log.i(TAG, "start: 错误！！！token=["+token+"]...");
-            return -1;
+            msg=msgHandler.obtainMessage();
+            msg.what=-1;
+            msgHandler.sendMessage(msg);
         }
         Log.i(TAG, "start: 登录成功，获取到token["+token+"]...");;
         JSONArray courseListJson=getCourseList(token);
         if(courseListJson==null){
-            Log.i(TAG, "start: 获取课程列表失败...");;
-            return -2;
+            Log.i(TAG, "start: 获取课程列表失败...");
+            msg=msgHandler.obtainMessage();
+            msg.what=-2;
+            msgHandler.sendMessage(msg);
         }
         Log.i(TAG, "start: 获取到课程列表json["+courseListJson+"]...");
+        msg=msgHandler.obtainMessage();
+        msg.what=2;
+        msgHandler.sendMessage(msg);
         storeCourseInfo(courseListJson);
         Log.i(TAG, "start: 成功建立课程信息映射...");
 
 //        CourseInfoSqliteOpenHelper t=new CourseInfoSqliteOpenHelper(this.context, "courseInfo.db", null, 1);
 //        t.showAllRecord();
+        msg=msgHandler.obtainMessage();
+        msg.what=3;
+        msgHandler.sendMessage(msg);
         JSONArray contentListJson=getCourseContent(courseListJson, token);
         if(contentListJson.length()==0){
             Log.i(TAG, "start: 获取课程内容失败...");
-            return -3;
+            msg=msgHandler.obtainMessage();
+            msg.what=-3;
+            msgHandler.sendMessage(msg);
         }
+        msg=msgHandler.obtainMessage();
+        msg.what=4;
+        msgHandler.sendMessage(msg);
 //        Log.i(TAG, "start: content["+contentListJson.toString()+"]...");
         ContentSqliteOpenHelper contentSqliteOpenHelper=new ContentSqliteOpenHelper(this.context, "contents.db", null, 1);
         contentSqliteOpenHelper.put(contentListJson);
 //        contentSqliteOpenHelper.showAllRecord();
 
-
-        return 1;
+        msg=msgHandler.obtainMessage();
+        msg.what=1;
+        msgHandler.sendMessage(msg);
     }
 
 
